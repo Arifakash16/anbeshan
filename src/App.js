@@ -1,25 +1,48 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router,Switch, Route } from 'react-router-dom';
+import { Switch, Route,useHistory } from 'react-router-dom';
 import './App.css';
 import Home from './Components/HomeScreen';
 import SearchScreen from './Components/SearchScreen';
+import { searchData } from './api/GoogleSearch';
 
 
-function App() {
+
+
+// function App() {
+//   // const [searchTerm,setSearchTerm]=useState('');
+//   // const history= useHistory();
+//   // const setSearch=(term)=>{
+//   //  setSearchTerm (term);
+//   //  history.push('/search');
+  
+//   };
+const App=()=>{
+  const history =useHistory();
   const [searchTerm,setSearchTerm]=useState('');
-  return (
+  const setSearch= async(term)=>{
+    setSearchTerm(term);
+    // history.push('/search');
+   const data = await searchData(term);
+    console.log(data);
+
     
-    <Router>
-      
+  }
+   return (
+    
+    
       <div className="App">
         <Switch>
-          <Route exact path={"/"} component={()=><Home/>} />
-          <Route exact path={"/search"} component={()=> <SearchScreen searchTerm={searchTerm}/>}/>
+          <Route exact path= {'/'} component={()=><Home setSearch={setSearch} />}/>
+          <Route exact path={'/search'} component={()=> <SearchScreen searchTerm= {searchTerm} />} />
         </Switch>
+   
+      
       </div>
-    </Router>
+   
+  
     
   );
-}
+   }
+
 
 export default App;
